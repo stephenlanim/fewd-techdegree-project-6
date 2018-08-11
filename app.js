@@ -2,7 +2,10 @@ const $startScreen = $('#overlay'); // start-screen overlay
 const $startBtn = $('.btn__reset'); // start button
 const $keyboard = $('#qwerty'); // on-screen keybaord
 const $phrase = $('#phrase'); // on-screen game phrase
+const $tries = $('.tries img'); //hearts
+
 let missed = 0; // for tracking player's missed guesses
+
 
 const phrases = [
   'Handshaking error',
@@ -11,10 +14,6 @@ const phrases = [
   'Service unavailable',
   'File not found'
 ];
-
-// Create a missed variable, initialized to 0, that you’ll use later to keep track of the number of guesses the player has missed (remember, if the player guesses wrong 5 times, they lose the game)
-
-
 
 // When user clicks start button...
 $startBtn.on('click', () => {
@@ -65,28 +64,114 @@ function addPhraseToDisplay(arr){
 // Call display function and pass in random-phrase array
 addPhraseToDisplay(phraseArray);
 
+// variable to be returned
+// let response = null;
+
+// Check letter player clicked
+function checkLetter(key){
+  // variable to be returned
+  let response = null;
+
+  // Get every letter in phrase
+  const $letters = $('.letter');
+
+  // Loop through each letter
+  $letters.each( function (index, letter){
+    const $letter = $(this).text().toLowerCase();
+    // If letter matches clicked button
+    if ($letter === key.textContent) {
+      // add "show" class to list item
+      $(this).addClass('show');
+
+      // store matching letter inside response
+      response = $letter;
+      return response;
+    }
+  });
+
+
+  // const $letters = document.querySelectorAll('.letter');
+  // $letters.forEach( function (letter){
+  //   // const $letter = $(this).text().toLowerCase();
+  //   // If letter matches clicked button
+  //   if (letter.textContent.toLowerCase() === key.textContent) {
+  //     // add "show" class to list item
+  //     $(letter).addClass('show');
+  //
+  //     response = letter.textContent.toLowerCase();
+  //     // console.log(response);
+  //     return response;
+  //   // } else {
+  //   //   // const response =  null;
+  //   //   // console.log(response);
+  //   //   response = null;
+  //   //   return response;
+  //   // }
+  // });
+
+  // const response =
+  //   function () {
+  //     if ($letters.text().toLowerCase().contains(key.textContent)) {
+  //       const response = $letters.text().toLowerCase();
+  //       console.log(response);
+  //       return response;
+  //     } else {
+  //       const response = null;
+  //       console.log(response);
+  //       return response;
+  //     }
+  //   };
+
+  // for (i = 0; i < $letters.length; i += 1) {
+  //   const $letter = $letters[i];
+  //
+  //   // If letter matches clicked button
+  //   if ($letter.textContent.toLowerCase() === key.textContent) {
+  //     // add "show" class to list item
+  //     $($letter).addClass('show');
+  //
+  //     response = $letter.textContent.toLowerCase();;
+  //     console.log(response);
+  //   } else if ($letter.textContent.toLowerCase() !== key.textContent) {
+  //     response = null;
+  //     console.log(response);
+  //   }
+  // }
+
+  // return value of chosen letter
+  return response;
+}
+
+function checkWin() {
+  
+}
+
+//     Create a checkWin function.
+// Each time the player guesses a letter, this function will check whether the game has been won or lost. At the very end of the keyboard event listener, you’ll run this function to check if the number of letters with class “show” is equal to the number of letters with class “letters”. If they’re equal, show the overlay screen with the “win” class and appropriate text. Otherwise, if the number of misses is equal to or greater than 5, show the overlay screen with the “lose” class and appropriate text.
+
 
 // Add an event listener to the keyboard.
 $keyboard.on('click', (e) => {
   const key = e.target;
   if (key.tagName === 'BUTTON') {
-    console.log(key.textContent);
+    // show clicked key as "chosen"
+    $(key).addClass('chosen')
+      // disable clicked key
+      .attr('disabled', true);
+
+    // get user's selected letter
+    const letterFound = checkLetter(key);
+    console.log(letterFound);
+
+
+    if (letterFound === null) {
+
+      $tries.eq(missed).attr('src', 'images/lostHeart.png');
+      missed += 1;
+    }
+
+    // Check if player won or lost
+    checkWin();
+
   }
 });
-// Use event delegation to listen only to button events from the keyboard. When a player chooses a letter, add the “chosen” class to that button so the same letter can’t be chosen twice. Note that button elements have an attribute you can set called “disabled” that when set to true will not respond to user clicks. See the MDN documentation for more details.
-// Pass the button to the checkLetter function, and store the letter returned inside of a variable called letterFound. At this point, you can open the index.html file, click any of the letters on the keyboard, and start to see the letters appear in the phrase.
-
-
-
-// Create a checkLetter function.
-// The checkLetter function will be used inside of the event listener you’ll write in the next step.
-// This function should have one parameter: the button the player has clicked when guessing a letter.
-// The checkLetter function should get all of the
-// elements with a class of “letter” (remember that we added the letter class to all of the letters and none of the spaces when we made the game display). The function should loop over the letters and check if they match the letter in the button the player has chosen.
-// If there’s a match, the function should add the “show” class to the list item containing that letter, store the matching letter inside of a variable, and return that letter.
-// If a match wasn’t found, the function should return null.
-
-function checkLetter(key){
-  const $letter = $('#phrase .letter');
-
-}
