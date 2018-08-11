@@ -1,7 +1,7 @@
 const $startScreen = $('#overlay'); // start-screen overlay
 const $playBtn = $('.btn__reset'); // play button
 const $keyboard = $('#qwerty'); // on-screen keybaord
-const $phrase = $('#phrase'); // on-screen game phrase
+const $phrase = $('#phrase ul'); // on-screen phrase board
 const $tries = $('.tries img'); //hearts
 
 let missed = 0; // for tracking player's missed guesses
@@ -43,7 +43,7 @@ $playBtn.on('click', () => {
   if ($playBtn.text() === 'Play Again') {
 
     // remove phrase
-    $(`#phrase ul`).children().remove();
+    $phrase.children().remove();
 
     // insert new phrase
       // get another random phrase
@@ -110,8 +110,8 @@ function addPhraseToDisplay(arr){
       li.className = 'letter';
     }
 
-    // Append list item to `#phrase ul`
-    $(`#phrase ul`).append(li);
+    // Append character to phrase board
+    $phrase.append(li);
   };
 }
 
