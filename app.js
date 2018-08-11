@@ -37,8 +37,6 @@ $playBtn.on('click', () => {
 
   // If play button is a reset button...
   if ($playBtn.text() === 'Play Again') {
-    // reset start screen
-    $startScreen.toggleClass().toggleClass('start');
 
     // remove win or lose message
     $startScreen.find('h3').remove();
@@ -53,7 +51,7 @@ $playBtn.on('click', () => {
 
     // reset keyboard
       // remove "chosen" class
-      $keyboard.find('button').toggleClass()
+      $keyboard.find('button').removeClass('chosen')
       // remove disabled attribute
       .attr('disabled', false);
 
@@ -156,8 +154,11 @@ function checkWin() {
 
   // If all phrase letters have been found...
   if ($foundLetters === $allPhraseLetters) {
+    // reset start screen
+    $startScreen.removeClass('start win lose');
+
     // show "win" screen
-    $startScreen.toggleClass('start win').show('clip');
+    $startScreen.addClass('win').delay(400).show('clip');
 
     // display "win" message after title
     $('.title').after(winMessage);
@@ -167,8 +168,11 @@ function checkWin() {
   }
   // If player used up all tries/hearts
   else if (missed === $tries.length) {
+    // reset start screen
+    $startScreen.removeClass('start win lose');
+
     // show "lose" screen
-    $startScreen.toggleClass('start lose').show('clip');
+    $startScreen.addClass('lose').delay(400).show('clip');
 
     // display "lose" message after title
     $('.title').after(loseMessage);
