@@ -1,6 +1,8 @@
 /* Main styles */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&Roboto:300');
 
+@import url("https://fonts.googleapis.com/css?family=Nunito:300,300i,400,400i,600,600i,700,700i");
+
 /* Variables */
 
 :root {
@@ -12,7 +14,7 @@
   --color-keys: #37474F;
   --color-keys-light: #E5E5E5;
   --font-size-large: 60px;
-  --font-size-medium: 20px;
+  --font-size-medium: 30px;
   --transition: all .2s ease-in-out;
 }
 
@@ -20,6 +22,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
 }
 
 body {
@@ -37,7 +40,7 @@ li, ol, ul {
 h2 {
   margin: 0;
   text-transform: uppercase;
-  font-family: 'Open Sans', sans-serif;
+  /* font-family: 'Open Sans', sans-serif; */
   font-size: var(--font-size-large);
   margin: 0;
 }
@@ -78,7 +81,9 @@ button {
 /* Scoreboard */
 
 .tries {
-  background-image: url('../images/liveHeart.png');
+  /* background-image: url('../images/liveHeart.png'); */
+  /* background-repeat: no-repeat; */
+  /* background-size: contain; */
 }
 
 /* Phrase */
