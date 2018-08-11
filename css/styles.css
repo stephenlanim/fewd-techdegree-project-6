@@ -13,6 +13,7 @@
   --color-neutral-light: #D2D2D2;
   --color-keys: #37474F;
   --color-keys-light: #E5E5E5;
+  --color-keys-hover: #c3c3c3;
   --font-size-large: 60px;
   --font-size-medium: 30px;
   --transition: all .2s ease-in-out;
@@ -62,6 +63,11 @@ button {
   transition: var(--transition);
 }
 
+button:hover,
+button:focus {
+  background-color: var(--color-keys-hover);
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -80,6 +86,13 @@ button {
 
 .header {
   color: var(--color-start);
+}
+
+/* Topic */
+.topic {
+  font-size: var(--font-size-medium);
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /* Scoreboard */
@@ -111,7 +124,8 @@ button {
   width: 15px;
 }
 
-@keyframes highlight {
+/* Animation for shaking a chosen letter */
+@keyframes shake {
   0% {transform: rotate(0deg);}
   10% {transform: rotate(10deg);}
   20% {transform: rotate(-10deg);}
@@ -128,7 +142,7 @@ button {
 .show {
   color: #000;
   background-color: #76CE82;
-  animation-name: highlight;
+  animation-name: shake;
   animation-duration: 0.5s;
 }
 
@@ -146,12 +160,25 @@ button {
   color: #FFFFFF;
 }
 
+.chosen:hover,
+.chosen:focus {
+  background: var(--color-neutral);
+  border-radius: 5px;
+  font-size: var(--font-size-medium);
+  color: #FFFFFF;
+}
+
 .btn__reset {
   padding: 8px;
   margin: 50px auto;
   background: #FFFFFF;
   border-radius: 5px;
   font-size: var(--font-size-medium);
+  transition: all 0.3s ease-in-out;
+}
+.btn__reset:hover,
+.btn__reset:focus {
+  background-color: #000;
 }
 
 /* Overlay */
