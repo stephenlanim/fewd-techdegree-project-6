@@ -12,8 +12,9 @@ This project involved:
 - displaying a message once the player won or lost the game,
 - resetting the game once it ended,
 - the occasional use of jQuery to facilitate the above tasks,
-- CSS @keyframes animations, and
-- jQuery UI animations.
+- CSS @keyframes animations,
+- jQuery UI animations, and
+- refactoring code.
 
 - Site was tested in Chrome for Mac, Firefox for Mac, and Apple Safari.
 - HTML validated via the W3C Markup Validation Service.

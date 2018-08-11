@@ -29,6 +29,10 @@ $playBtn.on('click', () => {
   // If play button is a start button...
   if ($playBtn.text() === 'Start Game') {
 
+    // insert random phrase
+    phraseArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(phraseArray);
+
     // Hide start screen overlay
     $startScreen.hide('clip');
 
@@ -37,9 +41,6 @@ $playBtn.on('click', () => {
 
   // If play button is a reset button...
   if ($playBtn.text() === 'Play Again') {
-
-    // remove win or lose message
-    $startScreen.find('h3').remove();
 
     // remove phrase
     $(`#phrase ul`).children().remove();
@@ -114,9 +115,6 @@ function addPhraseToDisplay(arr){
   };
 }
 
-// Call display function and pass in random-phrase array
-addPhraseToDisplay(phraseArray);
-
 // Check letter player clicked
 function checkLetter(key){
   // variable to be returned
@@ -145,6 +143,27 @@ function checkLetter(key){
   return response;
 }
 
+// Clear overlay screen
+function clearScreen() {
+  // reset start screen
+  $startScreen.removeClass('start win lose');
+
+  // remove win or lose message if present
+  $startScreen.find('h3').remove();
+}
+
+// Display outcome (win/lose) screen and reset button
+function endGame(outcome, outcomeMessage) {
+  // show "win" screen
+  $startScreen.addClass(`${outcome}`).delay(400).show('clip');
+
+  // display "win" message after title
+  $('.title').after(outcomeMessage);
+
+  // change start button to reset button
+  $playBtn.text('Play Again');
+}
+
 // Check of player has one or lost game
 function checkWin() {
   // Get every letter in phrase
@@ -154,34 +173,23 @@ function checkWin() {
 
   // If all phrase letters have been found...
   if ($foundLetters === $allPhraseLetters) {
-    // reset start screen
-    $startScreen.removeClass('start win lose');
+    // Clear screen before displaying end-of-game message
+    clearScreen();
 
-    // show "win" screen
-    $startScreen.addClass('win').delay(400).show('clip');
+    // Display Win screen and Reset button
+    endGame('win', winMessage);
 
-    // display "win" message after title
-    $('.title').after(winMessage);
-
-    // change start button to reset button
-    $playBtn.text('Play Again');
   }
   // If player used up all tries/hearts
   else if (missed === $tries.length) {
-    // reset start screen
-    $startScreen.removeClass('start win lose');
+    // Clear screen before displaying end-of-game message
+    clearScreen();
 
-    // show "lose" screen
-    $startScreen.addClass('lose').delay(400).show('clip');
+    // Display Lose screen and Reset button
+    endGame('lose', loseMessage);
 
-    // display "lose" message after title
-    $('.title').after(loseMessage);
-
-    // change start button to reset button
-    $playBtn.text('Play Again');
   }
 }
-
 
 // Add an event listener to the keyboard.
 $keyboard.on('click', (e) => {
