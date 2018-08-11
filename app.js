@@ -1,12 +1,20 @@
 const $startScreen = $('#overlay'); // start-screen overlay
-const $startBtn = $('.btn__reset'); // start button
+const $playBtn = $('.btn__reset'); // play button
 const $keyboard = $('#qwerty'); // on-screen keybaord
 const $phrase = $('#phrase'); // on-screen game phrase
 const $tries = $('.tries img'); //hearts
 
 let missed = 0; // for tracking player's missed guesses
 
+// Win message
+const winMessage = document.createElement('h3');
+winMessage.textContent = "Congratulations! You won!";
 
+// Lose message
+const loseMessage = document.createElement('h3');
+loseMessage.textContent = "Sorry. You lost.";
+
+// Game phrases to select from
 const phrases = [
   'Handshaking error',
   'Internal server error',
@@ -16,9 +24,50 @@ const phrases = [
 ];
 
 // When user clicks start button...
-$startBtn.on('click', () => {
-  // Hide start screen overlay
-  $startScreen.hide();
+$playBtn.on('click', () => {
+
+  // If play button is a start button...
+  if ($playBtn.text() === 'Start Game') {
+
+    // Hide start screen overlay
+    $startScreen.hide('clip');
+
+    // Note: Game will start as normal
+  }
+
+  // If play button is a reset button...
+  if ($playBtn.text() === 'Play Again') {
+    // reset start screen
+    $startScreen.toggleClass().toggleClass('start');
+
+    // remove win or lose message
+    $startScreen.find('h3').remove();
+
+    // remove phrase
+    $(`#phrase ul`).children().remove();
+
+    // insert new phrase
+      // get another random phrase
+      phraseArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(phraseArray);
+
+    // reset keyboard
+      // remove "chosen" class
+      $keyboard.find('button').toggleClass()
+      // remove disabled attribute
+      .attr('disabled', false);
+
+    // reset missed guesses
+    missed = 0;
+
+    // reset hearts
+    $tries.attr('src', 'images/liveHeart.png');
+
+    // Hide start screen overlay
+    $startScreen.hide('clip');
+
+  }
+
 });
 
 function getRandomPhraseAsArray(arr){
@@ -26,15 +75,17 @@ function getRandomPhraseAsArray(arr){
   let phraseQty = arr.length;
   let phrasePosition = Math.floor(Math.random() *  phraseQty);
   let selectedPhrase = arr[phrasePosition];
+
   // Split phrase array into a new array of characters
   let splitPhrase = selectedPhrase.split('');
+
   // Return new character array
   return splitPhrase;
-  // console.log(splitPhrase);
 };
 
 // Save random-phrase array to variable
-const phraseArray = getRandomPhraseAsArray(phrases);
+let phraseArray = getRandomPhraseAsArray(phrases);
+  // Note: using "let" allows new random phrase to be generated each time this variable is set to getRandomPhraseAsArray(phrases).
 
 // Function to add phrase to screen
 function addPhraseToDisplay(arr){
@@ -42,12 +93,16 @@ function addPhraseToDisplay(arr){
   // Loop through each character in phrase array
   for (let i = 0; i < arr.length; i += 1) {
     const character = arr[i];
+
     // Create a list item
     const li = document.createElement('li');
+
     // Put array character inside list item
     li.textContent = character;
+
     // If character is a space...
     if (li.textContent === ' ') {
+
       // add class "space" to list item
       li.className = 'space';
     }
@@ -55,22 +110,20 @@ function addPhraseToDisplay(arr){
       // add class "letter" to list item
       li.className = 'letter';
     }
+
     // Append list item to `#phrase ul`
     $(`#phrase ul`).append(li);
   };
 }
 
-
 // Call display function and pass in random-phrase array
 addPhraseToDisplay(phraseArray);
-
-// variable to be returned
-// let response = null;
 
 // Check letter player clicked
 function checkLetter(key){
   // variable to be returned
   let response = null;
+  // Note: Default value is null so that returned value is null unless the player selects a valid letter.
 
   // Get every letter in phrase
   const $letters = $('.letter');
@@ -87,67 +140,43 @@ function checkLetter(key){
       response = $letter;
       return response;
     }
+    // Note: Returning null via an else statement produces a bug in which it value returned is always null unless the player chose the very last letter in the phrase. This is because the loop checks the player's chosen letter against all letters in the phrase and only returns to very last value in the loop. Adding a console.log() before each return statement in the if and else statements reveals the nature of this issue.
   });
-
-
-  // const $letters = document.querySelectorAll('.letter');
-  // $letters.forEach( function (letter){
-  //   // const $letter = $(this).text().toLowerCase();
-  //   // If letter matches clicked button
-  //   if (letter.textContent.toLowerCase() === key.textContent) {
-  //     // add "show" class to list item
-  //     $(letter).addClass('show');
-  //
-  //     response = letter.textContent.toLowerCase();
-  //     // console.log(response);
-  //     return response;
-  //   // } else {
-  //   //   // const response =  null;
-  //   //   // console.log(response);
-  //   //   response = null;
-  //   //   return response;
-  //   // }
-  // });
-
-  // const response =
-  //   function () {
-  //     if ($letters.text().toLowerCase().contains(key.textContent)) {
-  //       const response = $letters.text().toLowerCase();
-  //       console.log(response);
-  //       return response;
-  //     } else {
-  //       const response = null;
-  //       console.log(response);
-  //       return response;
-  //     }
-  //   };
-
-  // for (i = 0; i < $letters.length; i += 1) {
-  //   const $letter = $letters[i];
-  //
-  //   // If letter matches clicked button
-  //   if ($letter.textContent.toLowerCase() === key.textContent) {
-  //     // add "show" class to list item
-  //     $($letter).addClass('show');
-  //
-  //     response = $letter.textContent.toLowerCase();;
-  //     console.log(response);
-  //   } else if ($letter.textContent.toLowerCase() !== key.textContent) {
-  //     response = null;
-  //     console.log(response);
-  //   }
-  // }
 
   // return value of chosen letter
   return response;
 }
 
+// Check of player has one or lost game
 function checkWin() {
-  
-}
+  // Get every letter in phrase
+  const $allPhraseLetters = $('.letter').length;
+  // Get every letter the player found
+  const $foundLetters = $('.show').length;
 
-//     Create a checkWin function.
-// Each time the player guesses a letter, this function will check whether the game has been won or lost. At the very end of the keyboard event listener, you’ll run this function to check if the number of letters with class “show” is equal to the number of letters with class “letters”. If they’re equal, show the overlay screen with the “win” class and appropriate text. Otherwise, if the number of misses is equal to or greater than 5, show the overlay screen with the “lose” class and appropriate text.
+  // If all phrase letters have been found...
+  if ($foundLetters === $allPhraseLetters) {
+    // show "win" screen
+    $startScreen.toggleClass('start win').show('clip');
+
+    // display "win" message after title
+    $('.title').after(winMessage);
+
+    // change start button to reset button
+    $playBtn.text('Play Again');
+  }
+  // If player used up all tries/hearts
+  else if (missed === $tries.length) {
+    // show "lose" screen
+    $startScreen.toggleClass('start lose').show('clip');
+
+    // display "lose" message after title
+    $('.title').after(loseMessage);
+
+    // change start button to reset button
+    $playBtn.text('Play Again');
+  }
+}
 
 
 // Add an event listener to the keyboard.
@@ -161,17 +190,17 @@ $keyboard.on('click', (e) => {
 
     // get user's selected letter
     const letterFound = checkLetter(key);
-    console.log(letterFound);
 
-
+    // if player's chosen letter is not in the phrase...
     if (letterFound === null) {
 
+      // remove one live heart (by replacing it with a lost heart)
       $tries.eq(missed).attr('src', 'images/lostHeart.png');
+      // add to count of player's missed guesses
       missed += 1;
     }
 
     // Check if player won or lost
     checkWin();
-
   }
 });
