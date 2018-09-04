@@ -136,7 +136,7 @@ function checkLetter(key){
       response = $letter;
       return response;
     }
-    // Note: Returning null via an else statement produces a bug in which it value returned is always null unless the player chose the very last letter in the phrase. This is because the loop checks the player's chosen letter against all letters in the phrase and only returns to very last value in the loop. Adding a console.log() before each return statement in the if and else statements reveals the nature of this issue.
+    // Note: Returning null via an else statement produces a bug in which the value returned is always null unless the player chose the very last letter in the phrase. This is because the loop checks the player's chosen letter against all letters in the phrase and only returns to very last value in the loop. Adding a console.log() before each return statement in the if and else statements reveals the nature of this issue.
   });
 
   // return value of chosen letter
