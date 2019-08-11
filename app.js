@@ -20,7 +20,14 @@ const phrases = [
   'Internal server error',
   'Gateway timeout',
   'Service unavailable',
-  'File not found'
+  'File not found',
+  'Access denied',
+  'Not enough memory',
+  'Low disk space',
+  'Invalid password',
+  'Device not ready',
+  'Bad file type',
+  'File too large'
 ];
 
 // When user clicks start button...
@@ -126,15 +133,15 @@ function checkLetter(key){
 
   // Loop through each letter
   $letters.each( function (index, letter){
-    const $letter = $(this).text().toLowerCase();
+    const $letter = $(letter).text().toLowerCase();
     // If letter matches clicked button
     if ($letter === key.textContent) {
       // add "show" class to list item
-      $(this).addClass('show');
+      $(letter).addClass('show');
 
       // store matching letter inside response
       response = $letter;
-      return response;
+      // return response;
     }
     // Note: Returning null via an else statement produces a bug in which the value returned is always null unless the player chose the very last letter in the phrase. This is because the loop checks the player's chosen letter against all letters in the phrase and only returns to very last value in the loop. Adding a console.log() before each return statement in the if and else statements reveals the nature of this issue.
   });
@@ -164,7 +171,7 @@ function endGame(outcome, outcomeMessage) {
   $playBtn.text('Play Again');
 }
 
-// Check of player has one or lost game
+// Check if player has won or lost game
 function checkWin() {
   // Get every letter in phrase
   const $allPhraseLetters = $('.letter').length;
